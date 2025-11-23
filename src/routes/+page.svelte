@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { initThree } from '$lib/three/init';
     import { createDemoScene } from '$lib/three/scene';
+    import Song from '$lib/types/songs';
 
     let canvas: HTMLCanvasElement;
 
@@ -9,6 +10,8 @@
         const res = await fetch('/api/today');
         const data = await res.json();
         console.log(data)
+        const today = data.map((t:any) => new Song(t))
+        console.log(today)
     }
 
     onMount(() => {
