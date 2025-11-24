@@ -1,6 +1,10 @@
-<script>
+<script lang="ts">
 	import Card from '$lib/components/Card.svelte';
 	import Today from '$lib/components/Today.svelte';
+
+	import Song from '$lib/types/songs';
+
+	export let today:Song[]
 </script>
 
 <main class="dt__content">
@@ -10,6 +14,9 @@
 				<h3>Echoes from This Day</h3>
 				<p>Looking back at last performances that happened on this day</p>
 			</header>
+			<main>
+				<Today {today}></Today>
+			</main>
 		</Card>
 		<Card>
 			<header>

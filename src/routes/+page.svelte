@@ -9,11 +9,13 @@
 
     let canvas: HTMLCanvasElement;
 
+    let today:Song[] = []
+
     async function loadData() {
         const res = await fetch('/api/today');
         const data = await res.json();
         console.log(data)
-        const today = data.map((t:any) => new Song(t))
+        today = data.map((t:any) => new Song(t))
         console.log(today)
 
         const res2 = await fetch('/api/archive')
@@ -39,6 +41,12 @@
     });
 </script>
 
+
+<div class="dt__main">
+    <Header title="Dusty Tracks" subtitle="Last Heard Live" />
+    <Content {today} />
+</div>
+
 <style>
 canvas {
     width: 100%;
@@ -46,11 +54,6 @@ canvas {
     display: block;
 }
 </style>
-
-<div class="dt__main">
-    <Header title="Dusty Tracks" subtitle="Last Heard Live" />
-    <Content message="Aquí va el contenido principal de la app" />
-</div>
 
 <!--<canvas bind:this={canvas}></canvas>-->
 

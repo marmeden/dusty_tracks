@@ -1,47 +1,31 @@
+<script lang="ts">
+    import emblaCarouselSvelte from 'embla-carousel-svelte'
+    import EventEphemeride from '$lib/components/EventEphemeride.svelte'
 
+    import Song from 'lib/types/songs';
 
-<script>
-import Swiper from 'swiper';
-const swiper = new Swiper('.swiper', {
-  // Optional parameters
-  direction: 'vertical',
-  loop: true,
-
-  // If we need pagination
-  pagination: {
-    el: '.swiper-pagination',
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-
-  // And if we need scrollbar
-  scrollbar: {
-    el: '.swiper-scrollbar',
-  },
-});
+    export let today:Song[]
 </script>
 
-<div class="swiper">
-  <!-- Additional required wrapper -->
-  <div class="swiper-wrapper">
-    <!-- Slides -->
-    <div class="swiper-slide">Slide 1</div>
-    <div class="swiper-slide">Slide 2</div>
-    <div class="swiper-slide">Slide 3</div>
-    ...
+<div class="embla" use:emblaCarouselSvelte>
+  <div class="embla__container">
+    {#each today as today_ephemeride }
+        <div class="embla__slide">
+            <EventEphemeride {today_ephemeride}></EventEphemeride>
+        </div>
+    {/each}
   </div>
-  <!-- If we need pagination -->
-  <div class="swiper-pagination"></div>
-
-  <!-- If we need navigation buttons -->
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-button-next"></div>
-
-  <!-- If we need scrollbar -->
-  <div class="swiper-scrollbar"></div>
 </div>
 
+<style>
+  .embla {
+    overflow: hidden;
+  }
+  .embla__container {
+    display: flex;
+  }
+  .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+</style>

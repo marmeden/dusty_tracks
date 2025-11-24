@@ -67,6 +67,11 @@ body {
             .dt__card {
                 &:first-child {
                     flex: 1;
+
+                    main {
+                        display: flex;
+                        align-items: center;
+                    }
                 }
             }
         }
@@ -83,6 +88,8 @@ body {
     background-color: $OTDP_CARD;
     border-radius: 6px;
     padding: 30px;
+    display: flex;
+    flex-direction: column;
 
     header {
         display: flex;
@@ -104,6 +111,36 @@ body {
             font-family: "DM Mono", monospace;
             font-size: 0.75rem;
             font-optical-sizing: auto;
+        }
+    }
+
+    main {
+        flex: 1;
+    }
+}
+
+.today__ephemeride {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    .today__ephemeride__date {
+
+    }
+
+    p {
+        font-family: "Manrope", sans-serif;
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: $OTDP_WHITE;
+        text-align: center;
+
+        span {
+            font-family: "Zen Dots", sans-serif;
+            color: $OTDP_PRIMARY;
+            margin: 0 5px;  
         }
     }
 }
