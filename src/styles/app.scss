@@ -1,0 +1,59 @@
+@use './variables' as *;
+
+body {
+    margin: 0;
+    background: $BG;
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    color: $OTDP_GREY;
+}
+
+
+.dt__main {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 30px;
+
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "dtheader" "dtcontent";
+}
+
+.dt__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: dtheader;
+
+    hgroup {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        gap: 0.5rem;
+    }
+
+    h1 {
+        font-family: "Zen Dots", sans-serif;
+        font-size: 1.125rem;
+        color: $OTDP_WHITE;
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 1rem;
+        font-family: "DM Mono", monospace;
+        font-weight: 500;
+        font-style: italic;
+        margin: 0;
+        line-height: 25px;
+    }
+}
+
+.dt__content {
+    display: grid;
+    grid-area: dtcontent;
+    grid-template-columns: 1fr 4fr;
+}

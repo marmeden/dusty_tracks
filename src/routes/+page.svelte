@@ -1,4 +1,7 @@
 <script lang="ts">
+    import Header from '$lib/components/Header.svelte';
+    import Content from '$lib/components/Content.svelte';
+
     import { onMount } from 'svelte';
     import { initThree } from '$lib/three/init';
     import { createDemoScene } from '$lib/three/scene';
@@ -41,5 +44,10 @@ canvas {
 }
 </style>
 
-<canvas bind:this={canvas}></canvas>
+<div class="dt__main">
+    <Header title="Dusty Tracks" subtitle="Last Heard Live" />
+    <Content message="Aquí va el contenido principal de la app" />
+</div>
+
+<!--<canvas bind:this={canvas}></canvas>-->
 
