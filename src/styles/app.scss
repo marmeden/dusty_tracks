@@ -56,4 +56,54 @@ body {
     display: grid;
     grid-area: dtcontent;
     grid-template-columns: 1fr 4fr;
+    gap: 30px;
+
+    > section {
+        &:first-child {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .dt__card {
+                &:first-child {
+                    flex: 1;
+                }
+            }
+        }
+
+        &:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+    }
+}
+
+.dt__card {
+    background-color: $OTDP_CARD;
+    border-radius: 6px;
+    padding: 30px;
+
+    header {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h3 {
+            color: $OTDP_WHITE;
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+            font-family: "DM Mono", monospace;
+            text-transform: uppercase;
+        }
+
+        p {
+            margin: 0;
+            color: $OTDP_GREY;
+            font-family: "DM Mono", monospace;
+            font-size: 0.75rem;
+            font-optical-sizing: auto;
+        }
+    }
 }

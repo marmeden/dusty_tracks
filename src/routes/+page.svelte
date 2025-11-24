@@ -15,10 +15,15 @@
         console.log(data)
         const today = data.map((t:any) => new Song(t))
         console.log(today)
+
+        const res2 = await fetch('/api/archive')
+        const data2 = await res2.json()
+        console.log(data2)
     }
 
     onMount(() => {
-        const { scene, camera, renderer } = initThree(canvas);
+        loadData()
+/*         const { scene, camera, renderer } = initThree(canvas);
         const { cube } = createDemoScene(scene);
 
         function animate() {
@@ -30,9 +35,7 @@
             renderer.render(scene, camera);
         }
 
-        animate();
-
-        loadData()
+        animate(); */
     });
 </script>
 
