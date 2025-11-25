@@ -18,4 +18,20 @@ export default class Song {
         this.position = obj.attributes.position || -1 
         this.slug = obj.attributes.slug || ''
     }
+
+    get albumName() {
+        return this.album.name
+    }
+
+    get gigVenue() {
+        return this.lastPlayedAt.venue
+    }
+
+    get gigCity() {
+        return this.lastPlayedAt.city
+    }
+
+    get gigCountry() {
+        return this.lastPlayedAt.country
+    }
 }

@@ -10,6 +10,7 @@
     let canvas: HTMLCanvasElement;
 
     let today:Song[] = []
+    let archive:Song[] = []
 
     async function loadData() {
         const res = await fetch('/api/today');
@@ -20,7 +21,8 @@
 
         const res2 = await fetch('/api/archive')
         const data2 = await res2.json()
-        console.log(data2)
+        archive = data2.data.map((t:any) => new Song(t))
+        console.log(archive)
     }
 
     onMount(() => {
@@ -44,7 +46,7 @@
 
 <div class="dt__main">
     <Header title="Dusty Tracks" subtitle="Last Heard Live" />
-    <Content {today} />
+    <Content {today} {archive} />
 </div>
 
 <style>

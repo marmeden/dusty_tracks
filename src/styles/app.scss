@@ -48,7 +48,7 @@ body {
         font-weight: 500;
         font-style: italic;
         margin: 0;
-        line-height: 25px;
+        line-height: 32px;
     }
 }
 
@@ -63,6 +63,7 @@ body {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            min-width: 0;
 
             .dt__card {
                 &:first-child {
@@ -86,10 +87,12 @@ body {
 
 .dt__card {
     background-color: $OTDP_CARD;
+    border: 1.5px solid $OTDP_IN;
     border-radius: 6px;
     padding: 30px;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
 
     header {
         display: flex;
@@ -124,11 +127,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-
-    .today__ephemeride__date {
-
-    }
+    gap: 1.5rem;
 
     p {
         font-family: "Manrope", sans-serif;
@@ -142,5 +141,86 @@ body {
             color: $OTDP_PRIMARY;
             margin: 0 5px;  
         }
+    }
+}
+
+.upcoming {
+    overflow-x: auto;          
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; 
+}
+
+.upcoming__ephemeride {
+    background-color: $OTDP_IN;
+    border-radius: 4px;
+    padding: 20px 20px;
+    padding-bottom: 30px;
+    flex: 0 0 auto;         
+    width: 200px;           
+    scroll-snap-align: start;
+    
+    p, span {
+        font-family: "Zen Dots", sans-serif;
+        color: $OTDP_WHITE;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    span {
+        font-size: 0.75rem;
+    }
+}
+
+.dt__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid $OTDP_GREY;
+
+    thead {
+        tr {
+            th {
+                font-family: "DM Mono", monospace;
+                color: $OTDP_GREY;
+                font-weight: 500;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                border-bottom: 1px solid $OTDP_GREY;
+            }
+
+            &:nth-child(1) {
+                th {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            color: $OTDP_WHITE;
+            font-size: 0.875rem;
+        }
+    }
+
+    thead tr:first-child th:first-child {
+        border-top-left-radius: 4px;
+    }
+
+    thead tr:first-child th:last-child {
+        border-top-right-radius: 4px;
+    }
+
+    tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 4px;
+    }
+    
+    tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 4px;
     }
 }
