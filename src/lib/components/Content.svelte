@@ -5,9 +5,9 @@
 	import Table from '$lib/components/Table.svelte';
 
 	import Song from '$lib/types/songs';
+    import GlobeCard from './GlobeCard.svelte';
 
 	export let today:Song[]
-	export let archive:Song[]
 </script>
 
 <main class="dt__content">
@@ -32,13 +32,19 @@
 		</Card>
 	</section>
 	<section>
+		<GlobeCard>
+			<header>
+				<h3>Dusty Gems</h3>
+				<p>Unearth the tracks that have gathered dust on the setlist.</p>
+			</header>
+		</GlobeCard>
 		<Card>
 			<header>
 				<h3>Last Played Archive</h3>
 				<p>Upcoming anniversaries of songs’ last performances</p>
 			</header>
 			<main>
-				<Table {archive}></Table>
+				<Table></Table>
 			</main>
 		</Card>
 	</section>

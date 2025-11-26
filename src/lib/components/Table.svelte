@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type Song from "lib/types/songs";
 	import { writable, derived } from "svelte/store";
+	import { tableData, currentPage, totalPages } from "lib/stores/table";
 	import {
 		Table,
 		TableHeader,
@@ -36,38 +37,6 @@
 			header: "Last Played On",
 		},
 	];
-
-	const pageSize = 5; // filas por página
-	let currentPage = writable(1);
-
-	let sortColumn = writable<string | null>(null);
-  	let sortAsc = writable(true);
-
-	const sortedArchive = derived([sortColumn, sortAsc], ([$sortColumn, $sortAsc]) => {
-		if (!$sortColumn) return archive;
-		return [...archive].sort((a, b) => {
-		if (a[$sortColumn] < b[$sortColumn]) return $sortAsc ? -1 : 1;
-		if (a[$sortColumn] > b[$sortColumn]) return $sortAsc ? 1 : -1;
-		return 0;
-		});
-	});
-
-	const totalPages = derived([], () => Math.ceil($sortedArchive.length / pageSize));
-
-	const paginatedArchive = derived([sortedArchive, currentPage], ([$sortedArchive, $currentPage]) => {
-		const start = ($currentPage - 1) * pageSize;
-		return $sortedArchive.slice(start, start + pageSize);
-	});
-
-	function goNext() {
-		currentPage.update(n => Math.min(n + 1, totalPages));
-	}
-
-	function goPrev() {
-		currentPage.update(n => Math.max(n - 1, 1));
-	}
-
-export let archive:Song[]
 
 </script>
 
@@ -118,7 +87,7 @@ export let archive:Song[]
 		</TableHeader>
 
 		<TableBody class="no-hover">
-			{#each archive as row}
+			{#each ($tableData as Song[]) as row}
 				<TableRow>
 					<TableCell class="px-5 py-4">{row.name}</TableCell>
 					<TableCell class="px-5 py-4">{row.albumName}</TableCell>
@@ -132,19 +101,19 @@ export let archive:Song[]
 	</Table>
 </div>
 <div class="flex justify-between items-center mt-2">
-  <button
-    class="px-3 py-1 border rounded disabled:opacity-50"
-    on:click={goPrev}
-    disabled={$currentPage === 1}
-  >
-    Prev
-  </button>
-  <span>Page {$currentPage} of {$totalPages}</span>
-  <button
-    class="px-3 py-1 border rounded disabled:opacity-50"
-    on:click={goNext}
-    disabled={$currentPage === $totalPages}
-  >
-    Next
-  </button>
+	<button
+		class="px-3 py-1 border rounded disabled:opacity-50"
+		on:click={goPrev}
+		disabled={$currentPage === 1}
+	>
+		Prev
+	</button>
+	<span>Page {$currentPage} of {$totalPages}</span>
+	<button
+		class="px-3 py-1 border rounded disabled:opacity-50"
+		on:click={goNext}
+		disabled={$currentPage === $totalPages}
+	>
+		Next
+	</button>
 </div>

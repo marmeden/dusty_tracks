@@ -81,11 +81,13 @@ body {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            position: relative;
         }
     }
 }
 
-.dt__card {
+.dt__card,
+.dt__globe__card {
     background-color: $OTDP_CARD;
     border: 1.5px solid $OTDP_IN;
     border-radius: 6px;
@@ -120,6 +122,18 @@ body {
     main {
         flex: 1;
     }
+}
+
+.dt__globe__card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: transparent;
+    border: none;
 }
 
 .today__ephemeride {

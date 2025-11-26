@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { tableData, currentPage, totalPages } from '$lib/stores/table';
+
     import Header from '$lib/components/Header.svelte';
     import Content from '$lib/components/Content.svelte';
 
@@ -11,18 +13,28 @@
 
     let today:Song[] = []
     let archive:Song[] = []
+    let numPages:number = 0
+
+    async function fetchPage(page: number) {
+        const res = await fetch(`/api/archive?page=${page}`);
+        const data = await res.json();
+
+        tableData.set(data.data.map((t:any) => new Song(t)));
+        currentPage.set(data.page);
+        totalPages.set(data.totalPages);
+    }
 
     async function loadData() {
         const res = await fetch('/api/today');
         const data = await res.json();
-        console.log(data)
         today = data.map((t:any) => new Song(t))
-        console.log(today)
 
-        const res2 = await fetch('/api/archive')
+        await fetchPage(1);
+
+/*         const res2 = await fetch('/api/archive')
         const data2 = await res2.json()
         archive = data2.data.map((t:any) => new Song(t))
-        console.log(archive)
+        numPages = data2.meta.pagination.pageCount */
     }
 
     onMount(() => {
@@ -46,7 +58,7 @@
 
 <div class="dt__main">
     <Header title="Dusty Tracks" subtitle="Last Heard Live" />
-    <Content {today} {archive} />
+    <Content {today} />
 </div>
 
 <style>
