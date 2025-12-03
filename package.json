@@ -30,6 +30,7 @@
 		"vite": "^7.2.2"
 	},
 	"dependencies": {
+		"bits-ui": "^2.14.4",
 		"data-table": "^2.0.0",
 		"embla-carousel-svelte": "^8.6.0",
 		"table": "^6.9.0",

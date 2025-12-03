@@ -6,8 +6,8 @@
 
 	import Song from '$lib/types/songs';
     import GlobeCard from './GlobeCard.svelte';
+    import AlbumSelector from './AlbumSelector.svelte';
 
-	export let today:Song[]
 </script>
 
 <main class="dt__content">
@@ -18,7 +18,7 @@
 				<p>Looking back at last performances that happened on this day</p>
 			</header>
 			<main>
-				<Today {today}></Today>
+				<Today></Today>
 			</main>
 		</Card>
 		<Card>
@@ -27,7 +27,7 @@
 				<p>Upcoming anniversaries of songs’ last performances</p>
 			</header>
 			<main>
-				<Upcoming {today}></Upcoming>
+				<Upcoming></Upcoming>
 			</main>
 		</Card>
 	</section>
@@ -37,8 +37,10 @@
 				<h3>Dusty Gems</h3>
 				<p>Unearth the tracks that have gathered dust on the setlist.</p>
 			</header>
+			<AlbumSelector></AlbumSelector>
 		</GlobeCard>
 		<Card>
+			<span></span>
 			<header>
 				<h3>Last Played Archive</h3>
 				<p>Upcoming anniversaries of songs’ last performances</p>

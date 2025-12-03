@@ -82,6 +82,24 @@ body {
             flex-direction: column;
             justify-content: flex-end;
             position: relative;
+
+            .dt__card {
+                background-color: transparent;
+                position: relative;
+                overflow: hidden;
+
+                > span {
+                    background-color: $OTDP_CARD;
+                    position: absolute;
+                    width: 120%;
+                    height: 120%;
+                    top: 0;
+                    left: 0;
+                    z-index: -1;
+                    opacity: .7;
+                    filter: blur(8px);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 <script lang="ts">
     import { tableData, currentPage, totalPages } from '$lib/stores/table';
+    import { today, soon } from '$lib/stores/songs';
+    import { albums } from '$lib/stores/albums';
 
     import Header from '$lib/components/Header.svelte';
     import Content from '$lib/components/Content.svelte';
@@ -8,10 +10,11 @@
     import { initThree } from '$lib/three/init';
     import { createDemoScene } from '$lib/three/scene';
     import Song from '$lib/types/songs';
+    import Album from '$lib/types/album';
+    import Band from 'lib/types/band';
 
     let canvas: HTMLCanvasElement;
 
-    let today:Song[] = []
     let archive:Song[] = []
     let numPages:number = 0
 
@@ -27,7 +30,18 @@
     async function loadData() {
         const res = await fetch('/api/today');
         const data = await res.json();
-        today = data.map((t:any) => new Song(t))
+        today.set(data.attributes.today.data.map((t:any) => new Song(t)))
+        soon.set(data.attributes.soon.data.map((s:any) => new Song(s)))
+
+        const res2 = await fetch('/api/albums');
+        const data2 = await res2.json()
+        console.log(data2.data[0].attributes.albums.data)
+
+        albums.set(data2.data[0].attributes.albums.data.map((a:any) => new Album({
+            data: {
+                ...a
+            }
+        })))
 
         await fetchPage(1);
 
@@ -58,7 +72,7 @@
 
 <div class="dt__main">
     <Header title="Dusty Tracks" subtitle="Last Heard Live" />
-    <Content {today} />
+    <Content />
 </div>
 
 <style>
