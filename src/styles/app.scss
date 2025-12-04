@@ -291,3 +291,59 @@ body {
     }
 
 }
+
+.album__selector {
+
+    > div {
+        width: 275px;
+    }
+
+    input {
+        padding: 0.875rem 2rem;
+        border-radius: 8px;
+        border: 1px solid $OTDP_WHITE;
+        width: 100%;
+        color: $OTDP_WHITE;
+
+        &:focus-visible {
+            outline: $OTDP_PRIMARY auto 10px;
+        }
+    }
+
+    button {
+        width: 100%;
+        box-sizing: border-box;
+        left: 0;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 1rem;
+    }
+}
+
+.album__list {
+    background: $OTDP_IN;
+    padding: 0;
+    font-family: "DM Mono", monospace;
+    color: $OTDP_WHITE;
+    font-size: 0.75rem;
+
+    > div {
+        padding: 0;
+    }
+}
+
+.album__list__item {
+    border-bottom: 1px solid $OTDP_GREY;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    &:hover {
+        background-color: transparentize($OTDP_PRIMARY, 0.8);
+    }
+
+    &[data-selected] {
+        background-color: $OTDP_PRIMARY;
+    }
+}

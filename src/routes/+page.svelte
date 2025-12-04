@@ -37,11 +37,18 @@
         const data2 = await res2.json()
         console.log(data2.data[0].attributes.albums.data)
 
-        albums.set(data2.data[0].attributes.albums.data.map((a:any) => new Album({
-            data: {
-                ...a
-            }
-        })))
+        albums.set(data2.data[0].attributes.albums.data.map((a:any) => {
+            const songs = a.attributes.songs.data.map((s:any) => new Song(s))
+            return new Album({
+                data: {
+                    ...a,
+                    songs: songs
+                }
+            })
+        }))
+
+        console.log($albums)
+
 
         await fetchPage(1);
 
