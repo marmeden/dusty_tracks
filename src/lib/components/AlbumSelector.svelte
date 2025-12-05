@@ -7,6 +7,7 @@
  
  
     let searchValue = $state("");
+    let selectedAlbum = $state<Album | null>(null);
 
     const filteredAlbums = $derived(
     searchValue === ""
@@ -15,6 +16,16 @@
             album.name.toLowerCase().includes(searchValue.toLowerCase())
         )
     );
+
+    $effect(() => {
+        if ($albums.length > 0 && selectedAlbum === null) {
+            console.log('entra')
+            selectedAlbum = $albums[0];
+            searchValue = $albums[0]?.name;
+            console.log(searchValue)
+            props.onSelect?.(selectedAlbum.id)
+        }
+    })
 
     const props = $props<{
         onSelect?: (albumId: number) => void;
@@ -25,8 +36,8 @@
     <p>Era</p>
     <Combobox.Root
         type="single"
+        value={selectedAlbum?.name}
         name="album"
-        bind:value={searchValue}
         onOpenChangeComplete={(o:any) => {
             if (!o) searchValue = "";
         }}
@@ -85,7 +96,7 @@
                     >
                         {#snippet children({ selected })}
                         {album.name}
-                        {#if selected}
+                        {#if selected }
                             <div class="ml-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
                             </div>
