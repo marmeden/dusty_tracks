@@ -25,7 +25,8 @@
     <p>Era</p>
     <Combobox.Root
         type="single"
-        name="favoriteFruit"
+        name="album"
+        bind:value={searchValue}
         onOpenChangeComplete={(o:any) => {
             if (!o) searchValue = "";
         }}
