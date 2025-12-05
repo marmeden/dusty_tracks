@@ -4,15 +4,14 @@
 
     import { albums } from "lib/stores/albums";
     import type Album from "lib/types/album";
- 
- 
+
     let searchValue = $state("");
     let selectedAlbum = $state<Album | null>(null);
 
     const filteredAlbums = $derived(
     searchValue === ""
         ? $albums
-        : $albums.filter((album:Album) =>
+        : (selectedAlbum)? $albums : $albums.filter((album:Album) =>
             album.name.toLowerCase().includes(searchValue.toLowerCase())
         )
     );
@@ -24,8 +23,15 @@
             searchValue = $albums[0]?.name;
             console.log(searchValue)
             props.onSelect?.(selectedAlbum.id)
-        }
+        } 
     })
+
+    function selectThisAlbum(id:number) {
+        selectedAlbum = $albums.find((a:Album) => a.id === id) || null
+        // searchValue = selectedAlbum?.name || ''
+        searchValue = 'caca'
+        props.onSelect?.(id)
+    }
 
     const props = $props<{
         onSelect?: (albumId: number) => void;
@@ -36,7 +42,7 @@
     <p>Era</p>
     <Combobox.Root
         type="single"
-        value={selectedAlbum?.name}
+        inputValue={selectedAlbum?.name}
         name="album"
         onOpenChangeComplete={(o:any) => {
             if (!o) searchValue = "";
@@ -44,15 +50,13 @@
         onValueChange={(event:any) => {
             console.log('sadfas')
             console.log(event)
-            props.onSelect?.(event)
-            //const albumId = event.value;
-            //props.onSelect?.(albumId);
+            selectThisAlbum(event)
         }}
     >
         <div class="relative">
             <Combobox.Input
-            oninput={(e:any) => (searchValue = e.currentTarget.value)}
-            class=""
+            oninput={(e:any) => {searchValue = e.currentTarget.value}}
+            class={searchValue}
             placeholder="Search an album"
             aria-label="Search an album"
             />
