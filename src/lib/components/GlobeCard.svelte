@@ -18,9 +18,6 @@
 			}
 	}) || [{location: [0, 0], size: 0}]
 
-	console.log('locs')
-	console.log(locations)
-
 	let canvas:HTMLCanvasElement;
 	let phi = 0;
 	let theta = 0;
@@ -61,16 +58,13 @@
 	}
 
 	onMount(() => {
-		const width = canvas.clientHeight;
-		const height = canvas.clientHeight;
-
-		console.log('w')
-		console.log(width)
+		const { width, height } = canvas.getBoundingClientRect();
 
 		const globe = createGlobe(canvas, {
-			devicePixelRatio: 2,
+			devicePixelRatio: window.devicePixelRatio || 2,
 			width: width * 2,
 			height: height * 2,
+			offset: [0, -10],
 			phi: 0,
 			theta: 0,
 			dark: 1,
@@ -88,7 +82,7 @@
 			onRender: state => {
 				state.phi = phi;
 				state.theta = theta;
-/* 				phi += 0.01; */
+				phi += 0.002;
 			}
 		});
 	});
@@ -108,11 +102,12 @@
 canvas {
 	position: absolute;
 	z-index: 1;
-	top: -75px;
-	left: -30px;
-    width: 100%;
-    height: 100vh;
+	inset: 0;
+	width: 100%;
+	height: 100%;
     display: block;
+	overflow: visible;
+	transform: translateY(-100px);
 }
 </style>
 

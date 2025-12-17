@@ -47,12 +47,14 @@
 				<h3>Dusty Gems</h3>
 				<p>Unearth the tracks that have gathered dust on the setlist.</p>
 			</header>
-			<AlbumSelector
-  				onSelect={handleSelect}>
-			</AlbumSelector>
-			{#each albumSelected?.top5Newest as top}
-				<p>{top.name} {top.lastPlayedOn}</p>
-			{/each}
+			<div>
+				<AlbumSelector
+  					onSelect={handleSelect}>
+				</AlbumSelector>
+				{#each albumSelected?.top5Newest as top}
+					<p>{top.name} {top.lastPlayedOn}</p>
+				{/each}
+			</div>
 		</GlobeCard>
 		<Card>
 			<span></span>
