@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 export function initThree(canvas: HTMLCanvasElement) {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x111111);
 
     const camera = new THREE.PerspectiveCamera(
         60,
@@ -12,7 +11,7 @@ export function initThree(canvas: HTMLCanvasElement) {
     );
     camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     return { scene, camera, renderer };

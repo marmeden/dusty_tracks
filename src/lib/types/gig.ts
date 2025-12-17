@@ -8,6 +8,8 @@ export default class Gig {
     state: string
     tour: string
     country: string
+    lat: number 
+    long: number
 
     constructor(obj?: any) {
         this.id = obj.data.id || -1  
@@ -19,5 +21,7 @@ export default class Gig {
         this.state = obj.data.attributes.state || ''
         this.tour = obj.data.attributes.tour || ''
         this.country = obj.data.attributes.country || ''
+        this.lat = obj.data.attributes.lat || 0
+        this.long = obj.data.attributes.long || 0
     }
 }

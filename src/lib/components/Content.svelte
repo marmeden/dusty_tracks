@@ -41,7 +41,8 @@
 		</Card>
 	</section>
 	<section>
-		<GlobeCard>
+		<GlobeCard
+			{albumSelected}>
 			<header>
 				<h3>Dusty Gems</h3>
 				<p>Unearth the tracks that have gathered dust on the setlist.</p>
