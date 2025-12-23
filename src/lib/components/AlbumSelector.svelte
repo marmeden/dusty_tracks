@@ -3,6 +3,7 @@
     import { Combobox } from "bits-ui";
 
     import { albums } from "lib/stores/albums";
+    import { albumSelected, locations } from 'lib/stores/albumSelected';
     import type Album from "lib/types/album";
 
     let searchValue = $state("");
@@ -29,7 +30,10 @@
     function selectThisAlbum(id:number) {
         selectedAlbum = $albums.find((a:Album) => a.id === id) || null
         // searchValue = selectedAlbum?.name || ''
-        searchValue = 'caca'
+
+        if(selectedAlbum) {
+            albumSelected.set(selectedAlbum)
+        }
         props.onSelect?.(id)
     }
 

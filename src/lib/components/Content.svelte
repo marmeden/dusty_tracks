@@ -7,14 +7,16 @@
 	import Song from '$lib/types/songs';
     import GlobeCard from './GlobeCard.svelte';
     import AlbumSelector from './AlbumSelector.svelte';
-    import type Album from 'lib/types/album';
+    import Album from 'lib/types/album';
 	import { albums } from "lib/stores/albums";
-
-	let albumSelected:Album | undefined
+	import { albumSelected } from 'lib/stores/albumSelected';
 
 	function handleSelect(value:number) {
 		console.log("Seleccionado:", value);
-		albumSelected = $albums.find((album:Album) => album.id === value)
+		const tempAlbum = $albums.find((album:Album) => album.id === value)
+		if(tempAlbum) {
+			albumSelected.set(tempAlbum);
+		}
 	}
 
 </script>
@@ -42,7 +44,7 @@
 	</section>
 	<section>
 		<GlobeCard
-			{albumSelected}>
+			{$albumSelected}>
 			<header>
 				<h3>Dusty Gems</h3>
 				<p>Unearth the tracks that have gathered dust on the setlist.</p>
@@ -51,7 +53,7 @@
 				<AlbumSelector
   					onSelect={handleSelect}>
 				</AlbumSelector>
-				{#each albumSelected?.top5Newest as top}
+				{#each $albumSelected?.top5Newest as top}
 					<p>{top.name} {top.lastPlayedOn}</p>
 				{/each}
 			</div>

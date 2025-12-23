@@ -1,22 +1,19 @@
 <script lang="ts">
 	import { initThree } from '$lib/three/init';
+	import type { Marker } from 'cobe';
 	import { onMount } from 'svelte';
 	import createGlobe from "cobe";
     import type Album from 'lib/types/album';
     import type Song from 'lib/types/songs';
 
-	export let albumSelected:Album | undefined
+	import { albumSelected, locations } from 'lib/stores/albumSelected';
 
-	let locations = albumSelected && albumSelected?.top5oldest
-		.filter(s => s.lastPlayedAt?.lat != null && s.lastPlayedAt?.long != null)
-		.map((s:Song) => {
-			const lat = s.lastPlayedAt.lat || 0
-			const long = s.lastPlayedAt.long || 0
-			return {
-				location: [lat, long] as [number, number],
-				size: 0.1
-			}
-	}) || [{location: [0, 0], size: 0}]
+
+	$: currentLocations = $locations
+
+	$: if (globe && currentLocations?.length) {
+		globe.markers = currentLocations;
+	}
 
 	let canvas:HTMLCanvasElement;
 	let phi = 0;
@@ -27,6 +24,7 @@
 	let lastY = 0;
 
 	let globe: any;
+
 
 	function onPointerDown(e: PointerEvent) {
 		isDragging = true;
@@ -57,10 +55,37 @@
 		canvas.releasePointerCapture(e.pointerId);
 	}
 
+	function handleClick(e: PointerEvent) {
+		const rect = canvas.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+
+		const nx = (x / rect.width) * 2 - 1;
+		const ny = (y / rect.height) * 2 - 1;
+
+		const lon = nx * Math.PI;
+		const lat = -ny * (Math.PI / 2);
+
+		checkMarkers(lat, lon);
+	}
+
+	function checkMarkers(lat: number, lon: number) {
+		const radius = 0.05;
+
+		for (const marker of $locations) {
+			const dLat = lat - marker.location[0];
+			const dLon = lon - marker.location[1];
+
+			if (Math.abs(dLat) < radius && Math.abs(dLon) < radius) {
+				console.log("Marker clicked:", marker);
+			}
+		}
+	}
+
 	onMount(() => {
 		const { width, height } = canvas.getBoundingClientRect();
 
-		const globe = createGlobe(canvas, {
+		globe = createGlobe(canvas, {
 			devicePixelRatio: window.devicePixelRatio || 2,
 			width: width * 2,
 			height: height * 2,
@@ -74,16 +99,16 @@
 			baseColor: [0.3, 0.3, 0.3],
 			markerColor: [0.745, 0.278, 0.612],
 			glowColor: [0.882, 0.765, 0.984],
-			markers: locations,
-/* 			markers: [
-				{ location: [37.7595, -122.4367], size: 0.03 },
-				{ location: [40.7128, -74.006], size: 0.1 }
-			], */
+			markers: $locations,
 			onRender: state => {
 				state.phi = phi;
 				state.theta = theta;
 				phi += 0.002;
 			}
+		});
+
+		canvas.addEventListener("click", (e) => {
+			handleClick(e);
 		});
 	});
 </script>
