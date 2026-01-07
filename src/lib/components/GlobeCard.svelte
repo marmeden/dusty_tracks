@@ -11,19 +11,49 @@
 
 	$: currentLocations = $locations
 
-	$: if (globe && currentLocations?.length) {
-		globe.markers = currentLocations;
-	}
-
 	let canvas:HTMLCanvasElement;
 	let phi = 0;
-	let theta = 0;
+	let theta = 0.5;
 
 	let isDragging = false;
 	let lastX = 0;
 	let lastY = 0;
 
 	let globe: any;
+
+	$: if (canvas && $locations.length) {
+		createNewGlobe();
+	}
+
+	function createNewGlobe() {
+		if (!canvas) return;
+		const { width, height } = canvas.getBoundingClientRect();
+
+    	if (globe && globe.destroy) globe.destroy();
+
+		globe = createGlobe(canvas, {
+			devicePixelRatio: window.devicePixelRatio || 2,
+			width: width * 2,
+			height: height * 2,
+			offset: [0, -10],
+			phi,
+			theta,
+			dark: 1,
+			diffuse: 1.35,
+			mapSamples: 16000,
+			mapBrightness: 6,
+			baseColor: [0.078, 0.0745, 0.086], // #141316
+			markerColor: [0.745, 0.278, 0.612], // #BE479C
+			glowColor: [0.882, 0.765, 0.984],   // #E1C3FB
+			markers: $locations,
+			onRender: state => {
+				state.phi = phi;
+				state.theta = theta;
+				phi += 0.002;
+			}
+		});
+  	}
+
 
 
 	function onPointerDown(e: PointerEvent) {
@@ -45,6 +75,7 @@
 
 		// limitar theta para que no se de la vuelta
 		theta = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, theta));
+		
 
 		lastX = e.clientX;
 		lastY = e.clientY;
@@ -55,7 +86,16 @@
 		canvas.releasePointerCapture(e.pointerId);
 	}
 
+
+	onMount(() => {
+		canvas.addEventListener("click", (e) => {
+			handleClick(e);
+		});
+	});
+
 	function handleClick(e: PointerEvent) {
+    	if (!canvas) return;
+
 		const rect = canvas.getBoundingClientRect();
 		const x = e.clientX - rect.left;
 		const y = e.clientY - rect.top;
@@ -66,51 +106,19 @@
 		const lon = nx * Math.PI;
 		const lat = -ny * (Math.PI / 2);
 
-		checkMarkers(lat, lon);
-	}
+		const currentMarkers = $locations;
 
-	function checkMarkers(lat: number, lon: number) {
-		const radius = 0.05;
-
-		for (const marker of $locations) {
+		for (const marker of currentMarkers) {
+			const radius = marker.size * 1.5; // Tolerancia según tamaño
 			const dLat = lat - marker.location[0];
 			const dLon = lon - marker.location[1];
 
 			if (Math.abs(dLat) < radius && Math.abs(dLon) < radius) {
-				console.log("Marker clicked:", marker);
+				console.log('Marker clicked:', marker);
+				// marker.onClick?.(marker); // Callback opcional
 			}
 		}
-	}
-
-	onMount(() => {
-		const { width, height } = canvas.getBoundingClientRect();
-
-		globe = createGlobe(canvas, {
-			devicePixelRatio: window.devicePixelRatio || 2,
-			width: width * 2,
-			height: height * 2,
-			offset: [0, -10],
-			phi: 0,
-			theta: 0,
-			dark: 1,
-			diffuse: 1.35,
-			mapSamples: 16000,
-			mapBrightness: 6,
-			baseColor: [0.3, 0.3, 0.3],
-			markerColor: [0.745, 0.278, 0.612],
-			glowColor: [0.882, 0.765, 0.984],
-			markers: $locations,
-			onRender: state => {
-				state.phi = phi;
-				state.theta = theta;
-				phi += 0.002;
-			}
-		});
-
-		canvas.addEventListener("click", (e) => {
-			handleClick(e);
-		});
-	});
+  	}
 </script>
 
 <article class="dt__globe__card">

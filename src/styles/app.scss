@@ -55,7 +55,7 @@ body {
 .dt__content {
     display: grid;
     grid-area: dtcontent;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr;
     gap: 30px;
 
     > section {
@@ -105,6 +105,10 @@ body {
                 z-index: 1;
             }
         }
+    }
+
+    @media screen and (min-width:768px) {
+        grid-template-columns: 1fr 4fr;
     }
 }
 
@@ -301,6 +305,19 @@ body {
 
 }
 
+.table-pagination {
+    button {
+        text-transform: uppercase;
+        color: $OTDP_GREY;
+        border-color: $OTDP_GREY;
+
+        &:hover {
+            background-color: $OTDP_GREY;
+            color: $OTDP_WHITE;
+        }
+    }
+}
+
 .album__selector {
 
     > div {
@@ -316,6 +333,7 @@ body {
 
         &:focus-visible {
             outline: $OTDP_PRIMARY auto 10px;
+            border: 1px solid $OTDP_PRIMARY;
         }
     }
 

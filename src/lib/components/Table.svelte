@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type Song from "lib/types/songs";
-	import { writable, derived } from "svelte/store";
 	import { tableData, currentPage, totalPages } from "lib/stores/table";
+	import { fetchPage } from "lib/service";
 	import {
 		Table,
 		TableHeader,
@@ -38,48 +38,26 @@
 		},
 	];
 
+	async function goPrev() {
+		await fetchPage($currentPage - 1)
+	}
+
+	async function goNext() {
+		await fetchPage($currentPage + 1)
+	}
+
 </script>
-
-<!-- <table class="dt__table  w-full">
-  <thead>
-	<tr>
-		<th class="border-0 px-5 py-3 text-left font-medium"></th>
-		<th class="border-0 px-5 py-3 text-left font-medium"></th>
-		<th colspan="3" class="px-5 py-3 text-center font-medium" style="border-bottom: 1px solid #737375">Last Played At</th> 
-		<th class="border-0 px-5 py-3 text-left font-medium"></th>
-    </tr>
-    <tr>
-      {#each columns as col}
-        <th class="px-5 py-3 text-left font-medium">
-          {col.header}
-        </th>
-      {/each}
-    </tr>
-  </thead>
-
-  <tbody>
-    {#each archive as row}
-      <tr>
-        {#each columns as col}
-          <td class="px-5 py-4">
-            {row[col.accessorKey]}
-          </td>
-        {/each}
-      </tr>
-    {/each}
-  </tbody>
-</table> -->
 
 <div class="table-container max-h-72 overflow-y-auto border rounded-lg">
 	<Table class="relative w-full border-collapse">
-		<TableHeader>
-			<TableRow class="hover:bg-transparent">
+		<TableHeader class="pointer-events-none">
+			<TableRow>
 				<TableHead rowspan={2} class="align-bottom px-5 py-3 sticky top-0 z-10">{columns[0].header}</TableHead>
 				<TableHead rowspan={2} class="align-bottom px-5 py-3 sticky top-0 z-10">{columns[1].header}</TableHead>
 				<TableHead colspan={3} class="px-5 py-3 text-center sticky top-0 z-10">Gig</TableHead>
 				<TableHead rowspan={2} class="align-bottom px-5 py-3 sticky top-0 z-10">{columns[5].header}</TableHead>
 			</TableRow>
-			<TableRow class="hover:bg-transparent">
+			<TableRow>
 				<TableHead class="px-5 py-3 sticky top-[3rem] z-10">{columns[2].header}</TableHead>
 				<TableHead class="px-5 py-3 sticky top-[3rem] z-10">{columns[3].header}</TableHead>
 				<TableHead class="px-5 py-3 sticky top-[3rem] z-10">{columns[4].header}</TableHead>
@@ -88,7 +66,7 @@
 
 		<TableBody class="no-hover">
 			{#each ($tableData as Song[]) as row}
-				<TableRow>
+				<TableRow class="pointer-events-none">
 					<TableCell class="px-5 py-4">{row.name}</TableCell>
 					<TableCell class="px-5 py-4">{row.albumName}</TableCell>
 					<TableCell class="px-5 py-4">{row.gigVenue}</TableCell>
@@ -100,9 +78,9 @@
 		</TableBody>
 	</Table>
 </div>
-<div class="flex justify-between items-center mt-2">
+<div class="table-pagination flex justify-between items-center mt-2">
 	<button
-		class="px-3 py-1 border rounded disabled:opacity-50"
+		class="px-3 py-1 border rounded cursor-pointer"
 		on:click={goPrev}
 		disabled={$currentPage === 1}
 	>
@@ -110,7 +88,7 @@
 	</button>
 	<span>Page {$currentPage} of {$totalPages}</span>
 	<button
-		class="px-3 py-1 border rounded disabled:opacity-50"
+		class="px-3 py-1 border rounded cursor-pointer"
 		on:click={goNext}
 		disabled={$currentPage === $totalPages}
 	>
